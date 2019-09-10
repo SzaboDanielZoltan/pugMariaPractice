@@ -1,6 +1,6 @@
 const express = require('express');
-const fs = require('fs');
-const path = require('path');
+
+const DB = require('../module/db');
 
 const router = express.Router();
 
@@ -9,22 +9,14 @@ router.get('/', (req, res) => {
   res.render('contact');
 });
 
-router.post('/', (req, res) => {
-  const opinion = req.body;
-  const opinionPath = path.join(__dirname, '../module/opinions.json');
-  fs.readFile(opinionPath, 'utf8', (err, opinions) => {
-    if (err) {
-      return err;
-    }
-    const opinionArray = JSON.parse(opinions);
-    opinionArray.push(opinion);
-    fs.writeFile(opinionPath, JSON.stringify(opinionArray, null, 2), 'utf8', (error) => {
-      if (error) {
-        return error;
-      }
-      res.render('contact', { datasent: true });
-    });
-  });
+router.post('/', async (req, res) => {
+  const db = new DB();
+  const written = await db.postOpinionsToJson(req, res);
+  if (written) {
+    res.render('contact', { datasent: true });
+  } else {
+    res.render('contact');
+  }
 });
 
 
