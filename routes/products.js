@@ -3,20 +3,17 @@ const DB = require('../module/db');
 
 const router = express.Router();
 
-/* GET home page. */
-router.get('/', (req, res) => {
-  const db = new DB();
-  db.mockData(0).then(
-    jsonArray => res.render('products', { products: jsonArray }),
-  );
+const db = new DB();
+
+router.get('/', async (req, res) => {
+  const realData = await db.read();
+  res.render('products', { products: realData });
 });
 
-router.get('/:id', (req, res) => {
-  const productID = parseInt(req.params.id, 10);
-  const db = new DB();
-  db.mockData(productID).then(
-    productObject => res.render('details', { product: productObject }),
-  );
+router.get('/:id', async (req, res) => {
+  const realData = await db.read();
+  const productObject = realData.filter(product => product.id == req.params.id)[0];
+  res.render('details', { product: productObject });
 });
 
 module.exports = router;

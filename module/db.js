@@ -1,34 +1,16 @@
 const path = require('path');
 const fs = require('fs');
+const mariadb = require('mariadb');
+
+const pool = mariadb.createPool({
+  database: 'shop', user: 'root', password: 'root', connectionLimit: 5,
+});
 
 module.exports = class DB {
   constructor() {
-
-  }
-
-  mockData(id = 0) {
-    if (id === 0) {
-      return new Promise((resolve, reject) => {
-        const filePath = path.join(__dirname, 'products.json');
-        fs.readFile(filePath, 'utf8', (err, content) => {
-          if (err) {
-            return reject(err);
-          }
-          resolve(JSON.parse(content));
-        });
-      });
-    }
-    return new Promise((resolve, reject) => {
-      const filePath = path.join(__dirname, 'products.json');
-      fs.readFile(filePath, 'utf8', (err, content) => {
-        if (err) {
-          return reject(err);
-        }
-        const jsonArray = JSON.parse(content);
-        const productObject = jsonArray.filter(product => product.id === id)[0];
-        resolve(productObject);
-      });
-    });
+    pool.getConnection().then(
+      conn => this.conn = conn,
+    );
   }
 
   postOpinionsToJson(req, res) {
@@ -49,5 +31,14 @@ module.exports = class DB {
         });
       });
     });
+  }
+
+  async read() {
+    const sql = `
+    SELECT p.id, p.name, p.price, p.stock, m.name AS manufacturer, p.active, p.insdate
+      FROM products AS p
+        INNER JOIN manufacturers AS m ON p.maufacturer = m.id;`;
+    const result = await this.conn.query(sql);
+    return result;
   }
 };
