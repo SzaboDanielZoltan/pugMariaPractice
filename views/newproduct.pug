@@ -1,0 +1,20 @@
+extends layout
+
+block content
+  .container
+    .row
+      .col-4.offset-4
+        form(action="/products" method="post")
+          .form-group
+            label(for='name') Name
+            input#name.form-control(name='name' type='text' placeholder='Product name')
+          .form-group
+            label(for='price') Price
+            input#price.form-control(name='price' type='number' placeholder='Product price')
+          .form-group
+            label(for='manufacturer') Manufacturer
+            input#price.form-control(name='manufacturer' type='number' placeholder='Product manufacturer')
+          .form-group
+            label(for='stock') Stock
+            input#price.form-control(name='stock' type='number' placeholder='Product stock')
+          button.btn.btn-primary(type='submit') Submit
