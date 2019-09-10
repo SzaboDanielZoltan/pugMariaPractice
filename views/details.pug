@@ -1,0 +1,13 @@
+extends layout
+
+block content
+  .container
+    .row
+      .col
+        .jumbotron.bg-dark.text-white
+          h1.display-4 #{product.name}
+          p.lead This is a product from #{product.manufacturer}!
+          hr.my-4
+          p The price is #{product.price}$ and we have #{product.stock} in stock.
+          p.lead
+            a.btn.btn-primary.btn-lg(href='/' role='button') Buy

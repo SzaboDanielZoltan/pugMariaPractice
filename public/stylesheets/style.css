@@ -1,0 +1,9 @@
+body {
+  background-color: #999999;
+}
+
+.card,
+.jumbotron {
+  margin-bottom: 1rem;
+  margin-top: 1rem;
+}

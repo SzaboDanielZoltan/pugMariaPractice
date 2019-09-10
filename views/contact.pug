@@ -1,0 +1,19 @@
+extends layout
+
+block content
+  .container
+    .row
+      .col-4.offset-4
+        form(action="/contact" method="post")
+          .form-group
+            label(for='exampleInputEmail1') Email address
+            input#exampleInputEmail1.form-control(name='email' type='email' aria-describedby='emailHelp' placeholder='Enter email')
+            small#emailHelp.form-text.text-muted We&apos;ll never share your email with anyone else.
+          .form-group
+            label(for='exampleInputPassword1') Opinion
+            input#exampleInputPassword1.form-control(name='opinion' type='text' placeholder='Write here your opinion')
+          button.btn.btn-primary(type='submit') Submit
+    .row
+      if datasent
+        .col.text-center
+          p Thanks for your opinion!
