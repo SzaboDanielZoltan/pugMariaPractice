@@ -13,11 +13,22 @@ block content
             input#price.form-control(name='price' type='number' value=`${product.price}` placeholder='Product price')
           .form-group
             label(for='manufacturer') Manufacturer
-            input#price.form-control(name='manufacturer' type='number' value=`${product.manufacturer}` placeholder='Product manufacturer')
+            select#manufacturer.form-control(name='manufacturer')
+              each manufacturer in companies
+                if product.manufacturer==manufacturer.id
+                  option(value=manufacturer.id selected) #{manufacturer.name}
+                else
+                  option(value=manufacturer.id) #{manufacturer.name}
           .form-group
             label(for='stock') Stock
             input#price.form-control(name='stock' type='number' value=`${product.stock}` placeholder='Product stock')
           .form-group
-            label(for='active') Active
-            input#price.form-control(name='active' type='number' value=`${product.active}` placeholder='Active: 1 or 0')
+            label(for='active') Active or inactive
+            select#active.form-control(name='active' value=`${product.active}`)
+              if product.active==1
+                option(value=1 selected) Active
+                option(value=0) Inactive
+              else
+                option(value=1) Active
+                option(value=0 selected) Inactive
           button.btn.btn-primary(type='submit') Submit

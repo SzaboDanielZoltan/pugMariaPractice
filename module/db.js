@@ -39,7 +39,14 @@ module.exports = class DB {
       FROM products AS p
         INNER JOIN manufacturers AS m ON p.manufacturer = m.id;`;
     const result = await this.conn.query(sql);
-    console.log(result);
+    return result;
+  }
+
+  async getManufacturers() {
+    const sql = `
+    SELECT *
+      FROM manufacturers;`;
+    const result = await this.conn.query(sql);
     return result;
   }
 

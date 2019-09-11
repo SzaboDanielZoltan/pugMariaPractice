@@ -11,14 +11,16 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/:id', async (req, res) => {
+  const manufacturers = await db.getManufacturers();
   if (req.params.id === 'newproduct') {
-    res.render('newproduct');
+    res.render('newproduct', { companies: manufacturers });
   }
   const realData = await db.read();
   const productObject = realData.filter(product => product.id == req.params.id)[0];
   res.render('details', {
     product: productObject,
     id: req.params.id,
+    companies: manufacturers,
   });
 });
 
