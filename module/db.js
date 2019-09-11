@@ -48,7 +48,7 @@ module.exports = class DB {
     INSERT INTO products
       (name, price, manufacturer, stock, active)
     VALUES
-      ('${product.name}', ${product.price}, ${product.manufacturer}, ${product.stock}, 1);
+      ('${product.name}', ${product.price}, ${product.manufacturer}, ${product.stock}, ${product.active});
     `;
     const result = await this.conn.query(sql);
     return result;

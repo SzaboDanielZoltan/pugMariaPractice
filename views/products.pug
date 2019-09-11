@@ -6,12 +6,27 @@ block content
       .col
         a.btn.btn-primary.btn-block(href='/products/newproduct' role='button') New product
     .row
+      .col-12
+        h1 ACTIVE PRODUCTS:
       each val in products
-        .col-4
-          .card.bg-dark.text-white
-            .card-body
-              h5.card-title #{val.name}
-              h6.card-subtitle.mb-2.text-muted Price: #{val.price}$
-              p.card-text Manufacturer: #{val.company}
-              a#showLink.card-link(href=`/products/${val.id}`) Edit
-              a#showLink.card-link(href=`/products/delete/${val.id}`) Delete
+        if val.active==1
+          .col-4
+            .card.bg-dark.text-white
+              .card-body
+                h5.card-title #{val.name}
+                h6.card-subtitle.mb-2.text-muted Price: #{val.price}$
+                p.card-text Manufacturer: #{val.company}
+                a#showLink.card-link(href=`/products/${val.id}`) Edit
+                a#showLink.card-link(href=`/products/delete/${val.id}`) Delete
+      .col-12
+        h1 INACTIVE PRODUCTS:
+      each val in products
+        if val.active==0
+          .col-4
+            .card.bg-dark.text-white
+              .card-body
+                h5.card-title #{val.name}
+                h6.card-subtitle.mb-2.text-muted Price: #{val.price}$
+                p.card-text Manufacturer: #{val.company}
+                a#showLink.card-link(href=`/products/${val.id}`) Edit
+                a#showLink.card-link(href=`/products/delete/${val.id}`) Delete
