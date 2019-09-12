@@ -6,22 +6,30 @@ const router = express.Router();
 const db = new DB();
 
 router.get('/', async (req, res) => {
-  const realData = await db.read();
-  res.render('products', { products: realData });
+  if (req.validToken) {
+    const realData = await db.read();
+    res.render('products', { products: realData });
+  } else {
+    res.redirect('/login');
+  }
 });
 
 router.get('/:id', async (req, res) => {
-  const manufacturers = await db.getManufacturers();
-  if (req.params.id === 'newproduct') {
-    res.render('newproduct', { companies: manufacturers });
+  if (req.validToken) {
+    const manufacturers = await db.getManufacturers();
+    if (req.params.id === 'newproduct') {
+      res.render('newproduct', { companies: manufacturers });
+    }
+    const realData = await db.read();
+    const productObject = realData.filter(product => product.id == req.params.id)[0];
+    res.render('details', {
+      product: productObject,
+      id: req.params.id,
+      companies: manufacturers,
+    });
+  } else {
+    res.redirect('/login');
   }
-  const realData = await db.read();
-  const productObject = realData.filter(product => product.id == req.params.id)[0];
-  res.render('details', {
-    product: productObject,
-    id: req.params.id,
-    companies: manufacturers,
-  });
 });
 
 router.post('/', async (req, res) => {
@@ -38,9 +46,13 @@ router.post('/:id', async (req, res) => {
 });
 
 router.get('/delete/:id', async (req, res) => {
-  const deleteId = req.params.id;
-  await db.delete(parseInt(deleteId, 10));
-  res.redirect('/products');
+  if (req.validToken) {
+    const deleteId = req.params.id;
+    await db.delete(parseInt(deleteId, 10));
+    res.redirect('/products');
+  } else {
+    res.redirect('/login');
+  }
 });
 
 module.exports = router;

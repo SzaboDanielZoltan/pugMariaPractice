@@ -4,7 +4,11 @@ const router = express.Router();
 
 /* GET home page. */
 router.get('/', (req, res) => {
-  res.render('about', { title: 'Express' });
+  if (req.validToken) {
+    res.render('about', { title: 'Express' });
+  } else {
+    res.redirect('/login');
+  }
 });
 
 module.exports = router;

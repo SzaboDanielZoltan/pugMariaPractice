@@ -12,7 +12,7 @@ body
     button.navbar-toggler(type='button' data-toggle='collapse' data-target='#navbarNav' aria-controls='navbarNav' aria-expanded='false' aria-label='Toggle navigation')
       span.navbar-toggler-icon
     #navbarNav.collapse.navbar-collapse
-      ul.navbar-nav
+      ul.navbar-nav.mr-auto
         li.nav-item.active
           a.nav-link(href='/') Home
         li.nav-item
@@ -21,6 +21,9 @@ body
           a.nav-link(href='/about') About
         li.nav-item
           a.nav-link(href='/contact') Contact
+      ul.navbar-nav
+        li.nav-item
+          a.btn.btn-primary.nav-link(href='/logout') Log Out
 
   block content
 

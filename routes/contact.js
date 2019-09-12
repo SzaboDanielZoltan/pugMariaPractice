@@ -6,7 +6,11 @@ const router = express.Router();
 
 
 router.get('/', (req, res) => {
-  res.render('contact');
+  if (req.validToken) {
+    res.render('contact');
+  } else {
+    res.redirect('/login');
+  }
 });
 
 router.post('/', async (req, res) => {

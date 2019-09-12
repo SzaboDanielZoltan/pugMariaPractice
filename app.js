@@ -4,13 +4,16 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const bodyParser = require('body-parser');
+const UserService = require('./module/user');
 
 const indexRouter = require('./routes/index');
+const loginRouter = require('./routes/login');
 const productsRouter = require('./routes/products');
 const aboutRouter = require('./routes/about');
 const contactRouter = require('./routes/contact');
 
 const app = express();
+const us = new UserService();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -24,7 +27,20 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(async (req, res, next) => {
+  const uuid = req.cookies.uuid;
+  const tokens = await us.getAllToken();
+  const filter = tokens.filter(token => token.token == uuid);
+  if (filter.length == 0) {
+    req.validToken = false;
+  } else {
+    req.validToken = true;
+  }
+  next();
+});
+
 app.use('/', indexRouter);
+app.use('/login', loginRouter);
 app.use('/products', productsRouter);
 app.use('/about', aboutRouter);
 app.use('/contact', contactRouter);
@@ -42,7 +58,9 @@ app.use((err, req, res, next) => {
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+
+  // Ez amúgy: res.render('error');
+  res.render('login');
 });
 
 module.exports = app;
