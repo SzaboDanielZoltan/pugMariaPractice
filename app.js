@@ -27,20 +27,19 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+
+app.use('/login', loginRouter);
 app.use(async (req, res, next) => {
   const uuid = req.cookies.uuid;
   const tokens = await us.getAllToken();
   const filter = tokens.filter(token => token.token == uuid);
   if (filter.length == 0) {
-    req.validToken = false;
+    res.render('login');
   } else {
-    req.validToken = true;
+    next();
   }
-  next();
 });
-
 app.use('/', indexRouter);
-app.use('/login', loginRouter);
 app.use('/products', productsRouter);
 app.use('/about', aboutRouter);
 app.use('/contact', contactRouter);

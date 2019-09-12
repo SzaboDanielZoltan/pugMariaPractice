@@ -1,16 +1,11 @@
 const express = require('express');
-
 const DB = require('../module/db');
 
 const router = express.Router();
 
 
 router.get('/', (req, res) => {
-  if (req.validToken) {
-    res.render('contact');
-  } else {
-    res.redirect('/login');
-  }
+  res.render('contact');
 });
 
 router.post('/', async (req, res) => {

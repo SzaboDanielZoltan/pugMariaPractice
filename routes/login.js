@@ -8,8 +8,13 @@ const us = new UserService();
 const getToken = (l = 20) => {
   let result = '';
   for (let i = 0; i < l; i++) {
-    const index = Math.round(Math.random() * 50 + 65);
-    result += String.fromCharCode(index);
+    const index = Math.round(Math.random() * 25 + 65);
+    const random = Math.round(Math.random() * 100);
+    if (random % 2 === 0) {
+      result += String.fromCharCode(index);
+    } else {
+      result += String.fromCharCode(index).toLowerCase();
+    }
   }
   return result;
 };
@@ -37,7 +42,7 @@ router.get('/register', (req, res) => {
 
 router.post('/register', (req, res) => {
   us.newUser(req.body);
-  res.redirect('/products');
+  res.redirect('/login');
 });
 
 module.exports = router;
