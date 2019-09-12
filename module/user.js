@@ -20,6 +20,15 @@ module.exports = class UserService {
     return result;
   }
 
+  async getUserByToken(token) {
+    const sql = `
+    SELECT * FROM users
+    WHERE token = '${token}'
+    `;
+    const result = await this.conn.query(sql);
+    return result;
+  }
+
   async updateToken(user, token) {
     const sql = `
     UPDATE users

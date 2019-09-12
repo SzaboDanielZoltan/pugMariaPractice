@@ -36,6 +36,8 @@ app.use(async (req, res, next) => {
   if (filter.length == 0) {
     res.render('login');
   } else {
+    const user = await us.getUserByToken(uuid);
+    res.locals.userName = user[0].name;
     next();
   }
 });
